@@ -3,6 +3,11 @@ h1 {
   text-align: center;
 }
 
+.total {
+  margin: 5%;
+  font-size: 150%;
+}
+
 .card {
   margin: 0 auto;
   font-size: 500%;
@@ -29,4 +34,10 @@ button.card {
 #hand {
   display: flex;
   flex-direction: row;
+  padding: 5%;
+  background-color: #666;
+  color: #FAFAFA;
+  border-radius: 15px;
+  text-shadow: 0 0 5px #000;
+  min-height: 20vh;
 }
