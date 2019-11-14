@@ -19,6 +19,7 @@
       <button class='card' ng-click='draw()'>{{deck.back}}</button>
       <button ng-click='end()'>Finish</button>
       <span class='total'>Current hand value: {{handValue}}</span>
+      <span class='total'>Dealer hand value: {{dealerValue}}</span>
       <section id='hand'>
         <span class='card' ng-repeat='card in hand'>
           {{card.face}}

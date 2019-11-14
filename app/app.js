@@ -6,6 +6,13 @@ function totalHand(hand) {
   return hand.reduce((total, card) => total + card.value, 0);
 }
 
+function shouldPlay(handValue, deck, tolerance = 0.5) {
+  const cutoff = 21 - handValue;
+  const goodDraws = deck.cards.filter((card) => card.value <= cutoff);
+  console.log('HERE'+((goodDraws.length / deck.cards.length) > tolerance));
+  return (goodDraws.length / deck.cards.length) > tolerance;
+}
+
 blackjack.controller('BlackjackController', ['$scope', function (scope) {
   scope.deck = new Deck();
   scope.hand = [];
@@ -17,18 +24,33 @@ blackjack.controller('BlackjackController', ['$scope', function (scope) {
     scope.handValue = totalHand(scope.hand);
     if (scope.handValue > 21) {
       scope.victory = false;
-    } else {
-      scope.victory = true;
+      return scope.end();
+    }
+    if (shouldPlay(scope.dealerValue, scope.deck)) {
+      scope.dealerHand.push(scope.deck.draw());
+      scope.dealerValue = totalHand(scope.dealerHand);
+      if (scope.dealerValue > 21) {
+        scope.victory = true;
+        scope.end();
+      }
     }
   };
   scope.reset = () => {
-    scope.deck.putBack(scope.hand.splice(0, scope.hand.length));
+    scope.deck.putBack(...scope.hand.splice(0));
+    scope.deck.putBack(...scope.dealerHand.splice(0));
     scope.deck.shuffle();
     scope.handleValue = 0;
+    scope.dealerValue = 0;
     scope.draw();
     scope.endscreenClass = 'not-visible';
   }
   scope.end = () => {
+    if (scope.victory || scope.handValue <= 21 && scope.handValue >= scope.dealerValue) {
+      scope.victory = true;
+    } else {
+      scope.victory = false;
+    }
+    console.log(scope.handValue, scope.dealerValue);
     scope.endscreenClass = 'visible';
   }
   scope.draw();
