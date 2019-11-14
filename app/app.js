@@ -15,7 +15,6 @@ function totalHand(hand) {
 function shouldPlay(opponentValue, handValue, deck, tolerance = 0.5) {
   const cutoff = 21 - handValue;
   const goodDraws = deck.cards.filter((card) => card.value <= cutoff);
-  console.log('HERE'+((goodDraws.length / deck.cards.length) > tolerance));
   return opponentValue > handValue && (goodDraws.length / deck.cards.length) > tolerance;
 }
 
@@ -28,6 +27,7 @@ blackjack.controller('BlackjackController', ['$scope', function (scope) {
   scope.dealerValue = 0;
   scope.handValue = 0;
   scope.draw = () => {
+    if (typeof scope.victory !== 'undefined') return;
     scope.hand.push(scope.deck.draw());
     scope.handValue = totalHand(scope.hand);
     if (scope.handValue > 21) {
@@ -50,6 +50,7 @@ blackjack.controller('BlackjackController', ['$scope', function (scope) {
     }
   }
   scope.dealerDraw = () => {
+    if (typeof scope.victory !== 'undefined') return;
     if (scope.dealerValue >= 17) return;
     const card = scope.deck.draw();
     if (scope.dealerHand.length === 0) {
@@ -57,9 +58,6 @@ blackjack.controller('BlackjackController', ['$scope', function (scope) {
     }
     scope.dealerHand.push(card);
     scope.dealerValue = totalHand(scope.dealerHand);
-    if (scope.dealerValue > 21) {
-      scope.end(true);
-    }
   }
   scope.reset = () => {
     scope.deck.putBack(...scope.hand.splice(0));
@@ -75,7 +73,7 @@ blackjack.controller('BlackjackController', ['$scope', function (scope) {
     while ((victory || typeof victory === 'undefined') && scope.dealerValue < 17) scope.dealerDraw();
     if (typeof victory !== 'undefined' || typeof scope.victory !== 'undefined') {
       scope.victory = victory || scope.victory;
-    } else if (scope.handValue <= 21 && scope.handValue >= scope.dealerValue) {
+    } else if (scope.handValue <= 21 && (scope.dealerValue > 21 || scope.handValue >= scope.dealerValue)) {
       scope.victory = true;
     } else {
       scope.victory = false;
