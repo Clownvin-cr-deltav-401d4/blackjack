@@ -9,9 +9,15 @@
   </head>
   <body ng-controller="BlackjackController">
     <h1>Blackjack</h1>
-
+    <section id='endscreen' class={{endscreenClass}}>
+      <article id='end-details'>
+        <h2>You {{victory ? 'win!' : 'lose...'}}</h2>
+        <button ng-click='reset()'>Restart</button>
+      </article>
+    </section>
     <section id='board'>
       <button class='card' ng-click='draw()'>{{deck.back}}</button>
+      <button ng-click='end()'>Finish</button>
       <span class='total'>Current hand value: {{handValue}}</span>
       <section id='hand'>
         <span class='card' ng-repeat='card in hand'>
