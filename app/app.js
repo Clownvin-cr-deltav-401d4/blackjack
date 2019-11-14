@@ -26,6 +26,29 @@ blackjack.controller('BlackjackController', ['$scope', function (scope) {
   scope.dealerHand = [];
   scope.dealerValue = 0;
   scope.handValue = 0;
+  scope.playerChips = 200;
+  scope.currentBet = 0;
+  scope.winnings = 0;
+  scope.endscreenClass = 'not-visible';
+  scope.betClass = 'visible';
+  scope.boardClass = 'not-visible';
+
+  scope.bet = (bet) => {
+    if((scope.playerChips - bet) >= 0 ){
+    scope.currentBet = scope.currentBet + bet;
+    scope.playerChips = scope.playerChips - bet;
+    } else 
+      alert('🖕Not enough chips you broke ass bitch!🖕')
+  };
+
+  scope.confirmBet = () => {
+    if (scope.currentBet <= 0) {
+      alert('You must place a bet before starting');
+      return;
+    }
+    scope.start();
+  };
+ 
   scope.draw = () => {
     if (typeof scope.victory !== 'undefined') return;
     scope.hand.push(scope.deck.draw());
@@ -34,19 +57,22 @@ blackjack.controller('BlackjackController', ['$scope', function (scope) {
       return scope.end(false);
     }
     if (scope.handValue === 21) {
-      return scope.end(true);
+      scope.victory = true;
     }
   };
   scope.start = () => {
+    scope.betClass = 'not-visible';
+    scope.boardClass = 'visible';
     scope.draw();
     scope.dealerDraw();
     scope.draw();
     scope.dealerDraw();
-    scope.endscreenClass = 'not-visible';
     if (scope.handValue === 21) {
       scope.victory = true;
       scope.endscreenClass = 'visible';
       scope.wins++;
+      scope.winnings = scope.currentBet * 2.5;
+      scope.playerChips += scope.winnings;
     }
   }
   scope.dealerDraw = () => {
@@ -60,14 +86,19 @@ blackjack.controller('BlackjackController', ['$scope', function (scope) {
     scope.dealerValue = totalHand(scope.dealerHand);
   }
   scope.reset = () => {
+    console.log(scope.wins, scope.losses);
     scope.deck.putBack(...scope.hand.splice(0));
     scope.dealerHand[0].hidden = false;
     scope.deck.putBack(...scope.dealerHand.splice(0));
     scope.deck.shuffle();
-    scope.handleValue = 0;
+    scope.handValue = 0;
     scope.dealerValue = 0;
+    scope.currentBet = 0;
     delete scope.victory;
-    scope.start();
+    scope.betClass = 'visible';
+    scope.boardClass = 'not-visible';
+    scope.endscreenClass = 'not-visible';
+    scope.winnings = 0;
   }
   scope.end = (victory) => {
     while ((victory || typeof victory === 'undefined') && scope.dealerValue < 17) scope.dealerDraw();
@@ -80,13 +111,14 @@ blackjack.controller('BlackjackController', ['$scope', function (scope) {
     }
     if (scope.victory) {
       scope.wins++;
+      scope.winnings = scope.currentBet * 2;
+      scope.playerChips += scope.winnings;
     } else {
       scope.losses++;
     }
     scope.dealerHand[0].hidden = false;
     scope.endscreenClass = 'visible';
   }
-  scope.start();
 }]);
 
 const SPADES = ['🂡', '🂢', '🂣', '🂤', '🂥', '🂦', '🂧', '🂨', '🂩', '🂪', '🂫', '🂭', '🂮',];

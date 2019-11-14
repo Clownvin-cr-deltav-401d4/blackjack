@@ -34,8 +34,23 @@ span.total {
   color: #FEFEFE;
 }
 
-#endscreen.not-visible {
-  display: none;
+.not-visible {
+  display: none !important;
+}
+
+#bet {
+  display: flex;
+  flex-direction: column;
+}
+
+#bet > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+#bet > div > * {
+  flex-grow: 1;
 }
 
 #endscreen.visible {
@@ -96,4 +111,8 @@ button {
 
 #board * {
   text-align: center;
+}
+
+.hidden {
+  display: none;
 }

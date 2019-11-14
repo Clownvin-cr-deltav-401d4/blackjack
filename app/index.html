@@ -10,15 +10,24 @@
   <body ng-controller="BlackjackController">
     <h1>💵 Blackjack 💵</h1>
     <h2>You: {{wins}}, Dealer: {{losses}}</h2>
+    <h2>Current Bet: 💲{{currentBet}}, Wallet: 💲{{playerChips}}</h2>
+    <section id='bet'>
+      <div>
+          <button ng-click='bet(5)' class={{betClass}}>+💲5</button>
+          <button ng-click='bet(10)' class={{betClass}}>+💲10</button>
+          <button ng-click='bet(20)' class={{betClass}}>+💲20</button>
+      </div>
+      <button ng-click='confirmBet()' class={{betClass}}>Confirm Bet</button>
+    </section>
     <section id='endscreen' class={{endscreenClass}}>
       <article id='end-details'>
-        <h2>You {{victory ? 'win!' : 'lose...'}}</h2>
+        <h2>You {{victory ? 'win 💲' + winnings + '!' : 'lose...'}}</h2>
         <span>Your hand's value: {{handValue}}</span>
         <span>Dealer's hand value: {{dealerValue}}</span>
         <button ng-click='reset()'>Restart</button>
       </article>
     </section>
-    <section id='board'>
+    <section id='board' class={{boardClass}}>
       <button ng-click='draw()'>Hit me</button>
       <button ng-click='end()'>Stay</button>
       <section id='hands'>
@@ -40,6 +49,5 @@
         </div>
       </div>
     </section>
-
   </body>
 </html>
