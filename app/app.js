@@ -7,11 +7,8 @@ blackjack.controller('BlackjackController', ['$scope', function (scope) {
   scope.hand = [];
   scope.handValue = 0;
   scope.draw = () => {
-    console.log('drawing');
     scope.hand.push(scope.deck.draw());
-    console.log(scope.hand);
     scope.handValue = scope.hand.reduce((total, card) => {
-      console.log(card, total, card.value + total);
       return total + card.value;
     }, 0);
   };
