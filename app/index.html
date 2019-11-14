@@ -8,19 +8,22 @@
     <script src="app.js"></script>
   </head>
   <body ng-controller="BlackjackController">
-    <h1>Blackjack</h1>
+    <h1>💵 Blackjack 💵</h1>
+    <h2>You: {{wins}}, Dealer: {{losses}}</h2>
     <section id='endscreen' class={{endscreenClass}}>
       <article id='end-details'>
         <h2>You {{victory ? 'win!' : 'lose...'}}</h2>
+        <span>Your hand's value: {{handValue}}</span>
+        <span>Dealer's hand value: {{dealerValue}}</span>
         <button ng-click='reset()'>Restart</button>
       </article>
     </section>
     <section id='board'>
-      <button class='card' ng-click='draw()'>{{deck.back}}</button>
-      <button ng-click='end()'>Finish</button>
+      <button ng-click='draw()'>Hit me</button>
+      <button ng-click='end()'>Stay</button>
       <section id='hands'>
         <div>
-          <span class='total'>You: {{handValue}}</span>
+          <span class='total'>Your hand, total: {{handValue}}</span>
           <section class='hand'>
             <span class='card' ng-repeat='card in hand'>
               {{card.face}}
@@ -28,10 +31,10 @@
           </section>
         </div>
         <div>
-          <span class='total'>Dealer: {{dealerValue}}</span>
+          <span class='total'>Dealer hand</span>
           <section class='hand'>
             <span class='card' ng-repeat='card in dealerHand'>
-              {{card.face}}
+              {{card.hidden ? deck.back : card.face}}
             </span>
           </section>
         </div>

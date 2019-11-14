@@ -3,7 +3,13 @@
 let blackjack = angular.module('blackjack', []);
 
 function totalHand(hand) {
-  return hand.reduce((total, card) => total + card.value, 0);
+  return hand.reduce((total, card) => {
+    if (card.value === 1) {
+      return total + 11 <= 21 ? total + 11 : total + 1;
+    } else {
+      return total + card.value;
+    }
+  }, 0);
 }
 
 function shouldPlay(opponentValue, handValue, deck, tolerance = 0.5) {
@@ -16,6 +22,8 @@ function shouldPlay(opponentValue, handValue, deck, tolerance = 0.5) {
 blackjack.controller('BlackjackController', ['$scope', function (scope) {
   scope.deck = new Deck();
   scope.hand = [];
+  scope.wins = 0;
+  scope.losses = 0;
   scope.dealerHand = [];
   scope.dealerValue = 0;
   scope.handValue = 0;
@@ -25,11 +33,29 @@ blackjack.controller('BlackjackController', ['$scope', function (scope) {
     if (scope.handValue > 21) {
       return scope.end(false);
     }
-    scope.dealerDraw();
+    if (scope.handValue === 21) {
+      return scope.end(true);
+    }
   };
+  scope.start = () => {
+    scope.draw();
+    scope.dealerDraw();
+    scope.draw();
+    scope.dealerDraw();
+    scope.endscreenClass = 'not-visible';
+    if (scope.handValue === 21) {
+      scope.victory = true;
+      scope.endscreenClass = 'visible';
+      scope.wins++;
+    }
+  }
   scope.dealerDraw = () => {
-    if (!shouldPlay(scope.handValue, scope.dealerValue, scope.deck)) return;
-    scope.dealerHand.push(scope.deck.draw());
+    if (scope.dealerValue >= 17) return;
+    const card = scope.deck.draw();
+    if (scope.dealerHand.length === 0) {
+      card.hidden = true;
+    }
+    scope.dealerHand.push(card);
     scope.dealerValue = totalHand(scope.dealerHand);
     if (scope.dealerValue > 21) {
       scope.end(true);
@@ -37,16 +63,16 @@ blackjack.controller('BlackjackController', ['$scope', function (scope) {
   }
   scope.reset = () => {
     scope.deck.putBack(...scope.hand.splice(0));
+    scope.dealerHand[0].hidden = false;
     scope.deck.putBack(...scope.dealerHand.splice(0));
     scope.deck.shuffle();
     scope.handleValue = 0;
     scope.dealerValue = 0;
     delete scope.victory;
-    scope.draw();
-    scope.endscreenClass = 'not-visible';
+    scope.start();
   }
   scope.end = (victory) => {
-    while ((victory || typeof victory === 'undefined') && shouldPlay(scope.handValue, scope.dealerValue, scope.deck)) scope.dealerDraw();
+    while ((victory || typeof victory === 'undefined') && scope.dealerValue < 17) scope.dealerDraw();
     if (typeof victory !== 'undefined' || typeof scope.victory !== 'undefined') {
       scope.victory = victory || scope.victory;
     } else if (scope.handValue <= 21 && scope.handValue >= scope.dealerValue) {
@@ -54,11 +80,15 @@ blackjack.controller('BlackjackController', ['$scope', function (scope) {
     } else {
       scope.victory = false;
     }
-    console.log(scope.handValue, scope.dealerValue);
+    if (scope.victory) {
+      scope.wins++;
+    } else {
+      scope.losses++;
+    }
+    scope.dealerHand[0].hidden = false;
     scope.endscreenClass = 'visible';
   }
-  scope.draw();
-  scope.endscreenClass = 'not-visible';
+  scope.start();
 }]);
 
 const SPADES = ['🂡', '🂢', '🂣', '🂤', '🂥', '🂦', '🂧', '🂨', '🂩', '🂪', '🂫', '🂭', '🂮',];
@@ -70,6 +100,7 @@ class Card {
   constructor(face, value) {
     this.face = face;
     this.value = value;
+    this.hidden = false;
   }
 
   toString() {
@@ -80,7 +111,11 @@ class Card {
 class Deck {
   constructor() {
     this.cards = [...SPADES, ...HEARTS, ...DIAMONDS, ...CLUBS]
-      .map((face, index) => new Card(face, (index % SPADES.length) + 1));
+      .map((face, index) => {
+        let value = (index % SPADES.length) + 1;
+        if (value > 10) value = 10;
+        return new Card(face, value);
+      });
     this.back = '🂠';
     this.shuffle();
   }

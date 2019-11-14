@@ -3,6 +3,11 @@ h1 {
   text-align: center;
 }
 
+h2 {
+  font-size: 200%;
+  text-align: center;
+}
+
 .total {
   margin: 1%;
   font-size: 150%;
@@ -10,16 +15,23 @@ h1 {
 
 .card {
   font-size: 750%;
+  background: WHITE;
+  display: block;
+  margin-right: 5%;
+  padding-top: 2.5%;
+  padding-bottom: 2.5%;
+  border-radius: 15px;
+  box-shadow: 5px 5px 5px BLACK;
+  margin-bottom: 5%;
 }
 
 button.card {
-  background: none;
   border: none;
-  cursor: pointer;
 }
 
 span.total {
-  font-size: 450%;
+  font-size: 350%;
+  color: #FEFEFE;
 }
 
 #endscreen.not-visible {
@@ -32,20 +44,26 @@ span.total {
   left: 0;
   width: 100vw;
   height: 100vh;
-  border-radius: 15px;
+  background-color: rgba(25, 25, 25, .55);
 }
 
 #hands {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  background-color: rgb(14, 54, 4);
 }
 
 #hands div {
   padding: 5%;
-  background-color: #EDEDED;
   color: #000;
   border-radius: 15px;
   min-height: 20vh;
+}
+#hands .hand {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: left;
 }
 
 #board {
@@ -57,8 +75,8 @@ span.total {
 }
 
 button {
-  width: auto;
   font-size: 200%;
+  cursor: pointer;
 }
 
 #end-details {
@@ -73,7 +91,7 @@ button {
   left: 25vw;
   width: 50vw;
   height: 50vh;
-  background-color: rgba(25, 25, 25, .55);
+  background-color: rgba(25, 25, 25, 0.55);
 }
 
 #board * {
