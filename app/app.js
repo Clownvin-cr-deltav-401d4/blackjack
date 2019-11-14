@@ -3,7 +3,7 @@
 let blackjack = angular.module('blackjack', []);
 
 function totalHand(hand) {
-  return hand.reduce((total, card) => {
+  return hand.sort((a, b) => b.value - a.value).reduce((total, card) => {
     if (card.value === 1) {
       return total + 11 <= 21 ? total + 11 : total + 1;
     } else {
@@ -49,7 +49,7 @@ blackjack.controller('BlackjackController', ['$scope', function (scope) {
     scope.start();
   };
  
-  scope.draw = () => {
+  scope.draw = (canvictory = true) => {
     if (typeof scope.victory !== 'undefined') return;
     scope.hand.push(scope.deck.draw());
     scope.handValue = totalHand(scope.hand);
@@ -57,7 +57,8 @@ blackjack.controller('BlackjackController', ['$scope', function (scope) {
       return scope.end(false);
     }
     if (scope.handValue === 21) {
-      scope.victory = true;
+      if (canvictory) scope.end(true);
+      else scope.victory = true;
     }
   };
   scope.start = () => {
