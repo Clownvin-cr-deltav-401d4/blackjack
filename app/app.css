@@ -18,6 +18,10 @@ button.card {
   cursor: pointer;
 }
 
+span.total {
+  font-size: 450%;
+}
+
 #endscreen.not-visible {
   display: none;
 }
@@ -28,7 +32,20 @@ button.card {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(25, 25, 25, .85);
+  border-radius: 15px;
+}
+
+#hands {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+#hands div {
+  padding: 5%;
+  background-color: #EDEDED;
+  color: #000;
+  border-radius: 15px;
+  min-height: 20vh;
 }
 
 #board {
@@ -39,20 +56,26 @@ button.card {
   flex-direction: column;
 }
 
-#board * {
-  text-align: center;
+button {
+  width: auto;
+  font-size: 200%;
 }
 
-#hand {
+#end-details {
+  text-align: center;
   display: flex;
-  flex-direction: row;
-  align-content: flex-start;
-  align-items: flex-start;
-  text-align: left;
-  padding: 5%;
-  background-color: #666;
+  flex-direction: column;
+  align-content: center;
+  justify-content: space-evenly;
+  position: fixed;
   color: #FAFAFA;
-  border-radius: 15px;
-  text-shadow: 0 0 5px #000;
-  min-height: 20vh;
+  top: 25vh;
+  left: 25vw;
+  width: 50vw;
+  height: 50vh;
+  background-color: rgba(25, 25, 25, .55);
+}
+
+#board * {
+  text-align: center;
 }
