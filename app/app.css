@@ -3,15 +3,82 @@ h1 {
   text-align: center;
 }
 
+h2 {
+  font-size: 200%;
+  text-align: center;
+}
+
+.total {
+  margin: 1%;
+  font-size: 150%;
+}
+
 .card {
-  margin: 0 auto;
-  font-size: 500%;
+  font-size: 750%;
+  background: WHITE;
+  display: block;
+  margin-right: 5%;
+  padding-top: 2.5%;
+  padding-bottom: 2.5%;
+  border-radius: 15px;
+  box-shadow: 5px 5px 5px BLACK;
+  margin-bottom: 5%;
 }
 
 button.card {
-  background: none;
   border: none;
-  cursor: pointer;
+}
+
+span.total {
+  font-size: 350%;
+  color: #FEFEFE;
+}
+
+.not-visible {
+  display: none !important;
+}
+
+#bet {
+  display: flex;
+  flex-direction: column;
+}
+
+#bet > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+#bet > div > * {
+  flex-grow: 1;
+}
+
+#endscreen.visible {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(25, 25, 25, .55);
+}
+
+#hands {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: rgb(14, 54, 4);
+}
+
+#hands div {
+  padding: 5%;
+  color: #000;
+  border-radius: 15px;
+  min-height: 20vh;
+}
+#hands .hand {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: left;
 }
 
 #board {
@@ -22,11 +89,30 @@ button.card {
   flex-direction: column;
 }
 
+button {
+  font-size: 200%;
+  cursor: pointer;
+}
+
+#end-details {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: space-evenly;
+  position: fixed;
+  color: #FAFAFA;
+  top: 25vh;
+  left: 25vw;
+  width: 50vw;
+  height: 50vh;
+  background-color: rgba(25, 25, 25, 0.55);
+}
+
 #board * {
   text-align: center;
 }
 
-#hand {
-  display: flex;
-  flex-direction: row;
+.hidden {
+  display: none;
 }

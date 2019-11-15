@@ -8,17 +8,46 @@
     <script src="app.js"></script>
   </head>
   <body ng-controller="BlackjackController">
-    <h1>Blackjack</h1>
-
-    <section id='board'>
-      <button class='card' ng-click='draw()'>{{deck.back}}</button>
-      <span>Current hand value: {{handValue}}</span>
-      <section id='hand'>
-        <span class='card' ng-repeat='card in hand'>
-          {{card.face}}
-        </span>
-      </section>
+    <h1>💵 Blackjack 💵</h1>
+    <h2>You: {{wins}}, Dealer: {{losses}}</h2>
+    <h2>Current Bet: 💲{{currentBet}}, Wallet: 💲{{playerChips}}</h2>
+    <section id='bet'>
+      <div>
+          <button ng-click='bet(5)' class={{betClass}}>+💲5</button>
+          <button ng-click='bet(10)' class={{betClass}}>+💲10</button>
+          <button ng-click='bet(20)' class={{betClass}}>+💲20</button>
+      </div>
+      <button ng-click='confirmBet()' class={{betClass}}>Confirm Bet</button>
     </section>
-
+    <section id='endscreen' class={{endscreenClass}}>
+      <article id='end-details'>
+        <h2>You {{victory ? 'win 💲' + winnings + '!' : 'lose...'}}</h2>
+        <span>Your hand's value: {{handValue}}</span>
+        <span>Dealer's hand value: {{dealerValue}}</span>
+        <button ng-click='reset()'>Restart</button>
+      </article>
+    </section>
+    <section id='board' class={{boardClass}}>
+      <button ng-click='draw()'>Hit me</button>
+      <button ng-click='end()'>Stay</button>
+      <section id='hands'>
+        <div>
+          <span class='total'>Your hand, total: {{handValue}}</span>
+          <section class='hand'>
+            <span class='card' ng-repeat='card in hand'>
+              {{card.face}}
+            </span>
+          </section>
+        </div>
+        <div>
+          <span class='total'>Dealer hand</span>
+          <section class='hand'>
+            <span class='card' ng-repeat='card in dealerHand'>
+              {{card.hidden ? deck.back : card.face}}
+            </span>
+          </section>
+        </div>
+      </div>
+    </section>
   </body>
 </html>
